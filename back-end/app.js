@@ -8,7 +8,7 @@ const app = express() // instantiate an Express object
 app.use(morgan('dev', { skip: (req, res) => process.env.NODE_ENV === 'test' })) // log all incoming requests, except when in unit test mode.  morgan has a few logging default styles - dev is a nice concise color-coded style
 app.use(cors()) // allow cross-origin resource sharing
 
-// use express's builtin body-parser middleware to parse any data included in a request
+// use express's builtin body-parser hmiddleware to parse any data included in a request
 app.use(express.json()) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 
@@ -21,6 +21,22 @@ mongoose
 // load the dataabase models we want to deal with
 const { Message } = require('./models/Message')
 const { User } = require('./models/User')
+
+
+// ADDED BY RYAN //
+
+// a route to the "About Us" page content
+const data = {
+  title: "About Us",
+  content: "Hi, this page is by Ryan Rim - senior CS student at CAS. I am working on finishing my electives this semester, and am excited for this class because it is the first project-based course I am taking. \n When I'm not studying I like to play soccer, play with my dog, and listen to music. Le Sserafim has been my go-to recently!",
+  image: "https://media.licdn.com/dms/image/D4E03AQEX_iRyqx9nVw/profile-displayphoto-shrink_800_800/0/1698200629753?e=1714003200&v=beta&t=OH1M0Dti6xyNH2SiC3GdPdy07zKRwS3zSpgi__piqW0"
+};
+app.get('/AboutUs', (req, res) => {
+  res.json(data);
+});
+
+// END BY RYAN //
+
 
 // a route to handle fetching all messages
 app.get('/messages', async (req, res) => {
@@ -77,6 +93,8 @@ app.post('/messages/save', async (req, res) => {
     })
   }
 })
+
+
 
 // export the express app we created to make it available to other modules
 module.exports = app // CommonJS export style!
